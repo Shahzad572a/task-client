@@ -1,7 +1,7 @@
 // src/components/UserTasks.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { BASE_URL } from '../constants';
 const UserTasks = ({ userId, onBack }) => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ const UserTasks = ({ userId, onBack }) => {
     useEffect(() => {
         const fetchUserTasks = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/tasks/${userId}`);
+                const response = await axios.get(`${BASE_URL}/api/tasks/${userId}`);
                 setTasks(response.data);
             } catch (err) {
                 setError(err.message);
@@ -49,7 +49,7 @@ const UserTasks = ({ userId, onBack }) => {
     const handleUpdateTask = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:5000/api/tasks/${editingTask._id}`, newTask);
+            const response = await axios.put(`${BASE_URL}/api/tasks/${editingTask._id}`, newTask);
             setTasks(tasks.map(task => (task._id === editingTask._id ? response.data : task)));
             setNewTask({ title: '', description: '', dueDate: '', status: 'pending', user: userId });
             setEditingTask(null);
@@ -60,7 +60,7 @@ const UserTasks = ({ userId, onBack }) => {
 
     const handleDeleteTask = async (taskId) => {
         try {
-            await axios.delete(`http://localhost:5000/api/tasks/${taskId}`);
+            await axios.delete(`${BASE_URL}/api/tasks/${taskId}`);
             setTasks(tasks.filter(task => task._id !== taskId));
         } catch (err) {
             setError(err.message);

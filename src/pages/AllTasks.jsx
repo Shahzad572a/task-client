@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-
+import { BASE_URL } from '../constants';
 const AllTasks = () => {
     const [tasks, setTasks] = useState([]);
     const [editingTask, setEditingTask] = useState(null);
@@ -13,7 +13,7 @@ const AllTasks = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/tasks/all');
+                const response = await fetch(`${BASE_URL}/api/tasks/all`);
                 const data = await response.json();
                 setTasks(data);
             } catch (error) {
@@ -27,7 +27,7 @@ const AllTasks = () => {
     const handleUpdate = async (id) => {
         const updatedTask = { title, description, dueDate, status };
         try {
-            await fetch(`http://localhost:5000/api/tasks/${id}`, {
+            await fetch(`${BASE_URL}/api/tasks/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const AllTasks = () => {
     // Handle task delete
     const handleDelete = async (id) => {
         try {
-            await fetch(`http://localhost:5000/api/tasks/${id}`, {
+            await fetch(`${BASE_URL}/api/tasks/${id}`, {
                 method: 'DELETE',
             });
             setTasks(tasks.filter(task => task._id !== id));

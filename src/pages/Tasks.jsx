@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-
+import { BASE_URL } from '../constants';
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState('');
@@ -16,7 +16,7 @@ const Tasks = () => {
     }, []);
 
     const fetchTasks = async () => {
-        const response = await fetch('http://localhost:5000/api/tasks', {
+        const response = await fetch(`${BASE_URL}/api/tasks`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -31,14 +31,14 @@ const Tasks = () => {
         const taskData = { title, description, dueDate, status };
         const token = localStorage.getItem('userInfo');
         if (editingIndex !== null) {
-            await fetch(`http://localhost:5000/api/tasks/${tasks[editingIndex]._id}`, {
+            await fetch(`${BASE_URL}/api/tasks/${tasks[editingIndex]._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(taskData),
             });
             setEditingIndex(null);
         } else {
-            await fetch('http://localhost:5000/api/tasks', {
+            await fetch(`${BASE_URL}/api/tasks`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const Tasks = () => {
     };
 
     const deleteTask = async (index) => {
-        await fetch(`http://localhost:5000/api/tasks/${tasks[index]._id}`, {
+        await fetch(`${BASE_URL}/api/tasks/${tasks[index]._id}`, {
             method: 'DELETE',
         });
         fetchTasks();

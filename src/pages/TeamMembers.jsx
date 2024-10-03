@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import UserTasks from './UserTasks';
-
+import { BASE_URL } from '../constants';
 const TeamMembers = ({ managerId }) => {
     const [teamMembers, setTeamMembers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ const TeamMembers = ({ managerId }) => {
     useEffect(() => {
         const fetchTeamMembers = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/users/team/${managerId}`);
+                const response = await axios.get(`${BASE_URL}/api/users/team/${managerId}`);
                 setTeamMembers(response.data);
             } catch (err) {
                 setError(err.message);
